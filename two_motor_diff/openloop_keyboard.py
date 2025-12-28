@@ -3,12 +3,13 @@ import json
 from direction_control import MotorDirectionCtrl
 
 # 初始化pwm控制客户端
+# pwm4_motor1: GPIO34、pwm5_motor2: GPIO35
 SOCK_PATH = "/run/pwm_control_uds.sock"
 sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 sock.connect(SOCK_PATH)
 
 # 初始化电机方向控制
-dir_controller = MotorDirectionCtrl()
+dir_controller = MotorDirectionCtrl() # motor1:49\50 motor2:91\92
 
 
 print("输入 direction1,duty_motor1;direction2,duty_motor2 0/1/2,0.0 ~ 1.0;0,1,2/0.0 ~ 1.0 ，输入 q 退出")
