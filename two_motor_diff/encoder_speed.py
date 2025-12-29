@@ -97,10 +97,8 @@ class EncoderSpeedMeter:
             speed = motor_circles / dt  # rps
 
             # 一阶低通滤波
-            self._speed_filt = (
-                self.alpha * self._speed_filt
-                + (1 - self.alpha) * speed
-            )
+            # self._speed_filt = (self.alpha * self._speed_filt + (1 - self.alpha) * speed)
+            self._speed_filt = speed
 
             print(
                 f"dt: {dt*1000:.2f} ms, "

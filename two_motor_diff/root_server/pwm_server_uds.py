@@ -80,8 +80,17 @@ while True:
     print("client connected")
 
     while True:
-        data = conn.recv(256)
-        if not data:
+        try:
+            data = conn.recv(256)
+            if not data:
+                # client 正常 close
+                break
+        except ConnectionResetError:
+            # client 异常退出（RST）
+            print("client reset connection")
+            break
+        except Exception as e:
+            print("recv error:", e)
             break
 
         try:
@@ -105,7 +114,12 @@ while True:
         except Exception as e:
             resp = {"ok": False, "error": str(e)}
 
-        conn.sendall(json.dumps(resp).encode())
+        try:
+            conn.sendall(json.dumps(resp).encode())
+        except BrokenPipeError:
+            print("client pipe broken while sending")
+            break
+
 
     conn.close()
     print("client disconnected")

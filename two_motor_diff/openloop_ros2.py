@@ -18,14 +18,37 @@ from direction_control import MotorDirectionCtrl
 
 # ================== 底盘参数 ==================
 WHEEL_DIAMETER = 0.067    # m
-WHEEL_BASE = 0.33         # m
+WHEEL_BASE = 0.275         # m
 
-# 电机模型
-def motor_model(speed : float):
-    k_12 = 0.2781 
-    b_12 = 0.0233
-    pwm_duty = k_12 * speed + b_12
+# motor1 电机模型, 默认为左电机
+def motor1_model(direction : int, speed : float):
+    if direction == 0:
+        pwm_duty = 0.0
+
+    elif direction == 1: # 正转模型
+        left_k_12_front = 0.2781 ; left_b_12_front = 0.0233
+        pwm_duty = left_k_12_front * speed + left_b_12_front
+        
+    elif direction == 2: # 反转模型
+        left_k_12_back = 0.2549 ; left_b_12_back = 0.0306
+        pwm_duty = left_k_12_back * speed + left_b_12_back
+    
     return pwm_duty
+
+def motor2_model(direction : int, speed : float):
+    if direction == 0:
+        pwm_duty = 0.0
+
+    elif direction == 1: # 正转模型
+        right_k_12_front = 0.2542 ; right_b_12_front = 0.0612
+        pwm_duty = right_k_12_front * speed + right_b_12_front
+        
+    elif direction == 2: # 反转模型
+        right_k_12_back = 0.2829 ; right_b_12_back = 0.0359
+        pwm_duty = right_k_12_back * speed + right_b_12_back
+    
+    return pwm_duty
+
 
 # 控制类
 class CmdVelToMotor(Node):
@@ -143,12 +166,13 @@ class CmdVelToMotor(Node):
 
 
         # 设置pwm
-        duty_motor1 = motor_model(spd_l)
-        duty_motor2 = motor_model(spd_r)
+        duty_motor1 = motor1_model(dir_l, spd_l)
+        duty_motor2 = motor2_model(dir_r, spd_r)
         self.sock.sendall(json.dumps({"duty_motor1":duty_motor1,"duty_motor2": duty_motor2}).encode())
         resp = self.sock.recv(256)
 
-        print("✔ 回复:", json.loads(resp.decode()))
+        print(f"send: duty_motor1:{duty_motor1}, duty_motor2:{duty_motor2}")
+        #print("✔ 回复:", json.loads(resp.decode()))
 
         # 更新里程计计算里面的轮速
         self.v_l = v_l
