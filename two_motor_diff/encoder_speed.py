@@ -4,8 +4,6 @@ import time
 import threading
 import signal
 import sys
-
-
 import queue
 
 
@@ -14,7 +12,7 @@ class EncoderSpeedMeter:
         self,
         gpio_pin: int,
         chip: int = 0,
-        sample_period: float = 0.1,
+        sample_period: float = 0.033,
         encoder_ppr: float = 11.0,
         encoder_edges: float = 1.0,
         gear_ratio: float = 56.0,

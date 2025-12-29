@@ -157,8 +157,6 @@ class CmdVelToMotor(Node):
 
         dir_l, spd_l = self.cmd_to_wheel_speed(v_l)
         dir_r, spd_r = self.cmd_to_wheel_speed(v_r)
-
-        cmd = f"{dir_l},{spd_l:.2f};{dir_r},{spd_r:.2f}\n"
         
         # 设置方向
         self.dir_controller.motor1_direction(dir_l)
@@ -166,8 +164,8 @@ class CmdVelToMotor(Node):
 
 
         # 设置pwm
-        duty_motor1 = motor1_model(dir_l, spd_l)
-        duty_motor2 = motor2_model(dir_r, spd_r)
+        duty_motor1 = motor1_model(dir_l, spd_l) # 计算电机 1 占空比
+        duty_motor2 = motor2_model(dir_r, spd_r) # 计算电机 2 占空比
         self.sock.sendall(json.dumps({"duty_motor1":duty_motor1,"duty_motor2": duty_motor2}).encode())
         resp = self.sock.recv(256)
 
