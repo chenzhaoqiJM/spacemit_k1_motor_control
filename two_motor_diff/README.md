@@ -15,10 +15,14 @@ pwm: GPIO35
 
 ```
 sudo apt update
-sudo apt install python3-gpiozero libgpiod-dev
+sudo apt install python3-gpiozero libgpiod-dev liblgpio-dev
 ```
 
 
 ## pwm 服务
 
 pwm_server_uds服务需要使用 sudo 运行
+
+
+## client 里面是调试程序
+
