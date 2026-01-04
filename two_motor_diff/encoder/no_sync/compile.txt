@@ -1,0 +1,4 @@
+
+
+
+g++ encoder_speed_meter.cpp encoder_no_sync.cpp -o encoder_no_sync -lgpiodcxx -lgpiod -pthread -O2

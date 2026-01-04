@@ -1,0 +1,4 @@
+
+sudo apt install python3-gpiozero libgpiod-dev
+
+g++ encoder_speed_meter.cpp encoder_sync.cpp -o encoder_sync -lgpiodcxx -lgpiod -pthread -O2
